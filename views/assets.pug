@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  ul
+    each val in userAssets
+      li= val.name + ' (with Asset Tag ' + val.asset_tag + ')'
+
