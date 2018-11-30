@@ -16,6 +16,7 @@ var oauthCallbackRouter = require('./routes/oauthCallback')
 var app = express();
 
 const { isAuthenticated } = require('./src/user-utils')
+const { keepHerokuFromIdling } = require('./src/heroku-utils')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -49,5 +50,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// pings app each 25mins to keep it from sleeping
+keepHerokuFromIdling('0:25:00')
 
 module.exports = app;
