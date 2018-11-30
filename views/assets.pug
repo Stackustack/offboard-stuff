@@ -1,7 +1,15 @@
 extends layout
 
 block content
-  ul
-    each val in userAssets
-      li= val.name + ' (with Asset Tag ' + val.asset_tag + ')'
-
+	.container
+		#table-container
+			table#assets.ui.celled.table.striped
+				thead
+					tr
+						th Asset Name
+						th Asset Tag
+				tbody
+				each val in userAssets
+					tr
+						td= val.name
+						td= val.asset_tag

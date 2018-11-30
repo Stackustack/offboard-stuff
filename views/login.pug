@@ -1,6 +1,24 @@
 extends layout
 
 block content
-  h2 Check your Netguru assets
-  a(href=url) Sign In with Google :)
-
+	.container
+		#header-text
+			h1#logo-maintext.ui.center.aligned.inverted.header
+				| ASSET CHECKER
+			h2#logo-subtext.ui.center.aligned.inverted.header
+				| ( SIMPLE TOOL TO CHECK YOUR FRESH SERVICE ASSETS )
+			a#login-button-container(href=url)
+				#login-button.ui.animated.google.plus.button
+					.visible.content
+						i#google-icon.google.plus.icon.labeled
+						| Hey! Sign in using Google account
+					.hidden.content
+						i.right.arrow.icon
+						| Only for netguru.pl domain :)
+			#footer-center.footer
+				| Created for NETGURU with 
+				i.heart.icon
+				| by Michał Jung (@juni)
+			#footer-right.footer
+				a(href='https://github.com/Stackustack/offboard-stuff')
+					i.github.icon
