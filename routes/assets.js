@@ -3,7 +3,7 @@ const router = express.Router();
 const {
     fetchFreshServiceUserId,
     getUserAssets
-} = require('./../src/freshServiceUtils.js')
+} = require('../src/fresh-service-utils.js')
 
 
 router.get('/', async (req, res, next) => {
