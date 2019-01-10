@@ -3,13 +3,37 @@ extends layout
 block content
 	.container
 		#table-container
-			table#assets.ui.celled.table.striped
+			table#assets.ui.celled.table.striped.selectable
 				thead
 					tr
-						th Asset Name
-						th Asset Tag
+						th
+							h3.ui.center.aligned.header Asset Name and Tag
+						th 
+							h3.ui.center.aligned.header Can be replaced?
+						th 
+							h3.ui.center.aligned.header Can be bought?
 				tbody
-				each val in userAssets
+				each asset in updatedAssets
 					tr
-						td= val.name
-						td= val.asset_tag
+						td
+							- var colors = ["orange", "yellow", "olive", "teal", "blue", "violet", "purple", "pink", "brown", "grey", "black", "red"]
+							h4.ui.header= asset.name
+								div(class='ui label tag' class=colors[Math.floor(Math.random() * colors.length)])= `${asset.asset_tag}`
+						if asset.can_be_replaced
+							if asset.can_be_replaced.replace == true 
+								td
+									div.ui.label.large.green= asset.can_be_replaced.message
+							if asset.can_be_replaced.replace == false
+								td
+									div.ui.label.large= asset.can_be_replaced.message
+						else
+							td= "-"
+						if asset.can_be_bought
+							if asset.can_be_bought.buyout == true
+								td
+									div.ui.label.large.green= asset.can_be_bought.message
+							if asset.can_be_bought.buyout == false
+								td
+									div.ui.label.large= asset.can_be_bought.message
+						else
+							td= "-"

@@ -1,4 +1,13 @@
 const axios = require('axios')
+const _ = require('lodash')
+const {
+    standarizeDate
+} = require("./date-utils.js")
+
+const {
+    prepareCanBeReplacedField,
+    prepareCanBeBoughtField
+} = require("./other-utils")
 
 const fetchFreshServiceUserId = async (userMail) => {
     const login = userMail.split("@")[0]
@@ -31,7 +40,12 @@ const getUserAssets = async (freshServiceId) => {
         console.log(e)
     })
 
-    return response.data.assets
+    const assets = response.data.assets
+    const trimmedData = assets.map(({name, asset_tag, display_id}) => {
+        return {name, asset_tag, display_id}
+    })
+
+    return trimmedData
 }
 
 const checkForIdWithPossibleMails = async (possibleMails, userType) => {
@@ -68,6 +82,48 @@ const fetchUserId = async (userMail, userType) => {
     }
 }
 
+const updateWithMacbookData = async (userAssets) => {
+    const assetsWithMacBookData = await Promise.all(
+        userAssets.map(asset => {
+            if (asset.name.toUpperCase().includes("MACBOOK")) {
+
+                const url = `${process.env.FRESH_SERVICE_DOMAIN}/cmdb/items/${asset.display_id}.json`
+
+                return callToFreshServiceAPI(url)
+                    .then(res => {
+                        leaseStartDate = res.data.config_item.levelfield_values.lease_date_7000772460
+                        leaseEndDate = res.data.config_item.levelfield_values.minimum_lease_time_7000772460
+
+                        if (leaseStartDate) {
+                            asset.can_be_replaced = prepareCanBeReplacedField({leaseStartDate})
+                            asset.can_be_bought = prepareCanBeBoughtField({leaseStartDate})
+                        } else if (leaseStartDate == null && leaseEndDate) {
+                            asset.can_be_replaced = prepareCanBeReplacedField({leaseEndDate})
+                            asset.can_be_bought = prepareCanBeBoughtField({leaseEndDate})
+                        } else {
+                            asset.can_be_replaced = "No data, contact Support for more info :)"
+                            asset.can_be_bought = "No data, contact Support for more info :)"
+                        }
+
+                        return asset
+                    })
+            }
+
+            return asset
+        })
+    ).then(assets => {
+        return assets
+    }).catch(e => {
+        console.log(e)
+    })
+
+    const trimmedData = assetsWithMacBookData.map(({name, asset_tag, can_be_replaced, can_be_bought}) => {
+        return {name, asset_tag, can_be_replaced, can_be_bought}
+    })
+
+    return trimmedData
+}
+
 const callToFreshServiceAPI = async (url) => {
     const response = await axios({
         method: 'get',
@@ -87,5 +143,6 @@ const callToFreshServiceAPI = async (url) => {
 
 module.exports = {
     fetchFreshServiceUserId,
-    getUserAssets
+    getUserAssets,
+    updateWithMacbookData
 }

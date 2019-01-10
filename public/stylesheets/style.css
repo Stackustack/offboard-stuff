@@ -68,8 +68,16 @@ margin-right: 30px;
 }
 
 #table-container {
-    padding-top: 10%;
-    padding-right: 10%;
-    padding-left: 10%;
-    padding-bottom: 10%;
-  }
+  padding-top: 10%;
+  padding-right: 10%;
+  padding-left: 10%;
+  padding-bottom: 10%;
+}
+
+.tag {
+  float: right;
+}
+
+td {
+  text-align: center !important;
+}
