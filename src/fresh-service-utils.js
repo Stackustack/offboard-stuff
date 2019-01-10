@@ -16,7 +16,7 @@ const fetchFreshServiceUserId = async (userMail) => {
 }
 
 const getUserAssets = async (freshServiceId) => {
-    url = `${process.env.FRESH_SERVICE_DOMAIN}/api/v2/assets?query="user_id: ${freshServiceId} "`
+    url = `${process.env.FRESH_SERVICE_DOMAIN}/api/v2/assets?query="user_id: ${freshServiceId}"`
 
     const response = await axios({
         method: 'get',
