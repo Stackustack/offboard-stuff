@@ -1,4 +1,6 @@
 # Asset Checker
+App here: http://asset-check.devguru.co
+
 Simple tool to check assets assigned to you in Fresh Service app. It also allows you to check when you can replace or buyout Macbook (based on lease time).
 
 # New Features!
